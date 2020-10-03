@@ -36,7 +36,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
               print(error.localizedDescription)
            } else if let data = data {
               let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-              print(dataDictionary)
+              //print(dataDictionary)
               // TODO: Get the array of movies --> download is complete
               self.movies = dataDictionary["results"] as! [[String:Any]] //results is a list of dicts --> casted as a dict, results key from dict where the value is a list of dicts
             
@@ -79,14 +79,27 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        
+        
+        //FInd the selected movie
+        let cell = sender as! UITableViewCell //sender is the cell that was tapped on
+        let indexPath = tableView.indexPath(for: cell)! //index of cell touched
+        let movie = movies[indexPath.row] //access movie array
+        
+        //pass the selected movie to the details view controller
+        let detailsViewController = segue.destination as! MovieDetailsViewController
+        detailsViewController.movie = movie //in the array
+        
+        //when transitioning, deselect (dont highlight/shade out)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
-    */
+    
 
 }
